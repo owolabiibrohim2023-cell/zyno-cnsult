@@ -41,12 +41,12 @@
   <!-- Top bar -->
   <div class="topbar">
     <div class="wrap topbar__in">
-      <ul class="topbar__contact">
+      <ul class="topbar__contact" id="topbarContact">
         <li><a href="tel:+2348080091300">+234 808 009 1300</a></li>
         <li><a href="tel:+2348066299425">+234 806 629 9425</a></li>
         <li class="topbar__mail"><a href="mailto:zynoglobalconceptsltd@gmail.com">zynoglobalconceptsltd@gmail.com</a></li>
       </ul>
-      <p class="topbar__rc">RC No: 8651327</p>
+      <p class="topbar__rc" id="topbarRc">RC No: 8651327</p>
     </div>
   </div>
 
@@ -86,19 +86,30 @@
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
               </button>
             </div>
-            <ul class="submenu">
+            <ul  class="submenu" id="navServices">
               <li><a href="#real-estate">Real estate</a></li>
               <li><a href="#car-deals">Car deals</a></li>
               <li><a href="#import-export">Import and export</a></li>
               <li><a href="#mining-boreholes">Mining and boreholes</a></li>
             </ul>
           </li>
+          <li><a class="nav__link" href="#products">Products</a></li>
           <li><a class="nav__link" href="#why-us">Why choose us</a></li>
           <li><a class="nav__link" href="#contact">Contact</a></li>
         </ul>
 
-        <div class="nav__foot">
+               <div class="nav__foot">
           <a class="btn btn--small" href="https://wa.me/2348080091300?text=Hello%20ZYNO-CONSULT%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener">WhatsApp us</a>
+
+          <a class="btn btn--small btn--admin" href="admin/login.html" aria-label="Admin login" title="Admin login">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><circle cx="12" cy="11" r="2"/><path d="M12 13v3"/></svg>
+            <span class="btn__txt">Admin</span>
+          </a>
+
+        
+        
+          
+        
           <p class="nav__contact">
             <a href="tel:+2348080091300">+234 808 009 1300</a><br>
             <a href="tel:+2348066299425">+234 806 629 9425</a><br>
@@ -115,6 +126,11 @@
     <section class="hero" id="top">
       <div class="wrap hero__main">
         <div class="hero__copy">
+          <div class="hero__identity" aria-label="ZYNO-CONSULT GLOBAL CONCEPT LTD, RC No. 8651327">
+            <span class="hero__identity-mark" aria-hidden="true"></span>
+            <span class="hero__identity-name">ZYNO-CONSULT <b>GLOBAL CONCEPT LTD</b></span>
+            <span class="hero__identity-rc">RC No. 8651327</span>
+          </div>
           <h1 class="hero__title">
             <span class="line"><span>Land, cars, cargo</span></span>
             <span class="line"><span>and minerals.</span></span>
@@ -138,7 +154,7 @@
       </div>
 
       <div class="services reveal">
-        <ul class="services__grid">
+        <ul class="services__grid" id="heroServices">>
           <li>
             <a href="#real-estate">
               <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 15 16 4l12 11"/><path d="M7 13v15h18V13"/><path d="M13 28v-8h6v8"/></svg>
@@ -288,7 +304,9 @@
           <li class="svc" id="real-estate" data-reveal style="--i:0">
             <article class="svc__card">
               <div class="svc__body">
-                <h3 class="svc__title">Real estate</h3>
+                <p class="svc__division">REAL ESTATE DIVISION</p>
+                <h3 class="svc__title">ZYNO HOMES AND PROPERTIES</h3>
+                <p class="svc__affiliation">A division of ZYNO-CONSULT GLOBAL CONCEPT LTD <span>· Investment · RC No. 8651327</span></p>
                 <p class="svc__lead">Buying and selling, construction, and estate broker and management services, along with related services.</p>
                 <ul class="svc__list">
                   <li>Buying and selling of property</li>
@@ -332,7 +350,9 @@
           <li class="svc" id="car-deals" data-reveal style="--i:1">
             <article class="svc__card">
               <div class="svc__body">
-                <h3 class="svc__title">Car deals</h3>
+                <p class="svc__division">MOTOR VEHICLES</p>
+                <h3 class="svc__title">ZYNO MOTORS</h3>
+                <p class="svc__affiliation">A division of ZYNO-CONSULT GLOBAL CONCEPT LTD <span>· Investment · RC No. 8651327</span></p>
                 <p class="svc__lead">Buy a car, sell yours, or swap it for another.</p>
                 <ul class="svc__list">
                   <li>Buying cars</li>
@@ -375,7 +395,9 @@
           <li class="svc" id="import-export" data-reveal style="--i:2">
             <article class="svc__card">
               <div class="svc__body">
-                <h3 class="svc__title">Import and export</h3>
+                <p class="svc__division">GLOBAL TRADE</p>
+                <h3 class="svc__title">ZYNO IMPORT AND EXPORT</h3>
+                <p class="svc__affiliation">A division of ZYNO-CONSULT GLOBAL CONCEPT LTD <span>· Investment · RC No. 8651327</span></p>
                 <p class="svc__lead">We work as an importer and exporter. Tell us what you want to bring in or send out.</p>
                 <ul class="svc__list">
                   <li>Importing goods</li>
@@ -418,9 +440,13 @@
           <li class="svc" id="mining-boreholes" data-reveal style="--i:3">
             <article class="svc__card">
               <div class="svc__body">
-                <h3 class="svc__title">Mining and boreholes</h3>
-                <p class="svc__lead">Mining of natural resources and drilling of boreholes.</p>
+                <p class="svc__division">DESIGN · BUILD · NATURAL RESOURCES</p>
+                <h3 class="svc__title svc__title--long">ZYNO ARCHITECTURAL DESIGN &amp; BUILDING CONTRACTOR</h3>
+                <p class="svc__affiliation">A division of ZYNO-CONSULT GLOBAL CONCEPT LTD <span>· Investment · RC No. 8651327</span></p>
+                <p class="svc__lead">Architectural design, building contracting, mining and borehole services.</p>
                 <ul class="svc__list">
+                  <li>Architectural design</li>
+                  <li>Building contractor</li>
                   <li>Mining of natural resources</li>
                   <li>Borehole drilling</li>
                 </ul>
@@ -458,6 +484,33 @@
 
         </ol>
 
+        <!-- <div class="svcs__more" data-reveal>
+          <div>
+            <h3>Not sure which service you need?</h3>
+            <p>Tell us what you are trying to do and we will point you the right way. We also handle many more kinds of deals.</p>
+          </div>
+          <div class="svcs__more-actions">
+            <a class="btn btn--glow" href="https://wa.me/2348080091300?text=Hello%20ZYNO-CONSULT%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener">Chat on WhatsApp</a>
+            <a class="btn btn--light" href="tel:+2348066299425">Call +234 806 629 9425</a>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+        <!-- ================= SERVICES (grid, filled from data) ================= -->
+    <!-- <section class="svcs" id="services" aria-labelledby="services-title"> -->
+     
+       <br><br><div class="wrap">
+        <div class="svcs__head" data-reveal>
+          <h2 class="svcs__title" id="services-title">
+            <span class="mask"><span>What we can help</span></span>
+            <span class="mask"><span>you get done.</span></span>
+          </h2>
+          <p class="svcs__sub">Pick a service to see what is available, or tell us what you need and we will point you to the right one.</p>
+        </div>
+
+        <div class="sgrid" id="servicesGrid" data-reveal aria-live="polite"></div>
+
         <div class="svcs__more" data-reveal>
           <div>
             <h3>Not sure which service you need?</h3>
@@ -468,6 +521,22 @@
             <a class="btn btn--light" href="tel:+2348066299425">Call +234 806 629 9425</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ================= PRODUCTS (filled from data) ================= -->
+    <section class="shop" id="products" aria-labelledby="products-title">
+      <div class="wrap">
+        <div class="shop__head" data-reveal>
+          <h2 class="shop__title" id="products-title">
+            <span class="mask"><span>Available now.</span></span>
+            <span class="mask"><span>Order in one tap.</span></span>
+          </h2>
+          <p class="shop__sub">Choose an item and tap Order. WhatsApp opens with the details already filled in.</p>
+        </div>
+
+        <div class="shop__filters" id="productFilters" role="group" aria-label="Filter products by service"></div>
+        <div class="pgrid" id="productsGrid" data-reveal aria-live="polite"></div>
       </div>
     </section>
     <!-- ================= WHY CHOOSE US ================= -->
@@ -528,7 +597,7 @@
 
           <div class="why-pro__rc">
             <span>RC No.</span>
-            <strong data-count="8651327">8,651,327</strong>
+            <strong data-count="8651327">8651327</strong>
           </div>
 
           <p>
@@ -701,7 +770,7 @@
         </p>
 
 
-        <div class="contact-pro__methods">
+        <div class="contact-pro__methods" id="contactMethods">
 
           <a
             class="contact-pro__method"
@@ -1075,7 +1144,7 @@
 
 
       <!-- SERVICES -->
-      <div class="zy-footer__column">
+      <div class="zy-footer__column" id="footerServices">
 
         <h3>Services</h3>
 
@@ -1107,6 +1176,7 @@
               <i>↗</i>
             </a>
           </li>
+          <li><a href="#products">Products</a></li>
 
           <li>
             <a href="#services">
@@ -1120,7 +1190,7 @@
 
 
       <!-- CONTACT -->
-      <div class="zy-footer__column zy-footer__contact">
+      <div class="zy-footer__column zy-footer__contact" id="footerContact">
 
         <h3>Get in touch</h3>
 
@@ -1168,21 +1238,25 @@
 
         <div class="zy-footer__social-links">
 
-          <a href="https://www.facebook.com/people/zyno-consult-global-concept-Ltd/61578834216737/" aria-label="Facebook">
-            <span>f</span>
+          <a href="https://www.facebook.com/people/zyno-consult-global-concept-Ltd/61578834216737/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-8.2h2.8l.4-3.2h-3.2V7.5c0-.9.3-1.6 1.6-1.6h1.7V3.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H7.3v3.2h2.8V21h3.4Z"/></svg>
           </a>
 
-          <a href="https://www.instagram.com/zynoconsult/" aria-label="Instagram">
-            <span>◎</span>
+          <a href="https://www.instagram.com/zynoconsult/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="social-icon__dot" cx="17.7" cy="6.6" r="1"/></svg>
           </a>
 
           <a
             href="https://wa.me/2348080091300"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             aria-label="WhatsApp"
           >
-            <span>◔</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.1 11.7a8.1 8.1 0 0 1-12 7.1l-4.2 1.1 1.1-4.1a8.1 8.1 0 1 1 15.1-4.1Z"/><path d="M9 8.4c.2-.4.4-.4.7-.4h.4c.2 0 .4 0 .5.4l.7 1.6c.1.3 0 .4-.1.6l-.5.6c-.2.2-.2.4-.1.6.5.9 1.2 1.6 2.1 2.1.2.1.4.1.6-.1l.7-.8c.2-.2.4-.2.7-.1l1.5.7c.3.1.4.3.4.5 0 .4-.2 1.1-.7 1.5-.5.5-1.1.7-1.8.6-1-.1-2.3-.7-3.6-1.9-1.1-1-2-2.4-2.2-3.4-.2-.8 0-1.5.7-2.4Z"/></svg>
+          </a>
+
+          <a href="https://www.tiktok.com/@zynoconsult" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.8 3.2c.3 2.2 1.5 3.6 3.7 3.8v3.2a8.7 8.7 0 0 1-3.7-1.1v6.1a5.8 5.8 0 1 1-5.8-5.8c.4 0 .8 0 1.2.1v3.3a2.7 2.7 0 1 0 1.4 2.4V3.2h3.2Z"/></svg>
           </a>
 
         </div>
@@ -1218,7 +1292,8 @@
   </div>
 
 </footer>
-       <script src="script.js"></script>
-    <!-- Next sections go here: #why-us, #contact -->
+  <script src="js/store.js"></script>
+  <script src="script.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>

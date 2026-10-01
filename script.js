@@ -28,15 +28,13 @@
   closeBtn.addEventListener('click', () => setMenu(false));
   scrim.addEventListener('click', () => setMenu(false));
 
-  // Close the menu after tapping a link (the page then scrolls to the section)
-  panel.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      if (mobileQuery.matches) root.classList.remove('menu-open');
-      burger.setAttribute('aria-expanded', 'false');
-      burger.setAttribute('aria-label', 'Open menu');
-    });
+    // Close the menu after tapping a link (works for links generated later too)
+  panel.addEventListener('click', (e) => {
+    if (!e.target.closest('a')) return;
+    if (mobileQuery.matches) root.classList.remove('menu-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Open menu');
   });
-
   // Services dropdown: works with click/tap and keyboard
   const menuItems = panel.querySelectorAll('.has-menu');
   menuItems.forEach((item) => {
@@ -85,7 +83,7 @@
     topLinks.forEach((a) => a.classList.toggle('is-active', a.getAttribute('href') === '#' + id));
   };
 
-  const sections = ['about', 'services', 'why-us', 'contact']
+    const sections = ['about', 'services', 'products', 'why-us', 'contact']
     .map((id) => document.getElementById(id))
     .filter(Boolean);
 
@@ -318,7 +316,7 @@
             );
 
             counter.textContent =
-              current.toLocaleString();
+              String(current);
 
             if (progress < 1) {
               requestAnimationFrame(animate);
@@ -605,4 +603,12 @@
 
   }
 
+})();
+/* ---------- Part 6: show the Admin button only in browsers that have used the admin ---------- */
+(() => {
+  const btn = document.querySelector('.btn--admin');
+  if (!btn) return;
+  let known = false;
+  try { known = !!localStorage.getItem('zyno_admin'); } catch (e) { /* ignore */ }
+  btn.hidden = !known;
 })();

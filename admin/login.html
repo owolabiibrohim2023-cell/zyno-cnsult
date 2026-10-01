@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14123A">
+  <title>Admin sign in | ZYNO-CONSULT</title>
+  <link rel="icon" href="../logo-badge.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="login">
+  <div class="login__glow login__glow--a" aria-hidden="true"></div>
+  <div class="login__glow login__glow--b" aria-hidden="true"></div>
+
+  <main class="login__card">
+    <img class="login__logo" src="../logo-badge.png" width="72" height="72" alt="ZYNO-CONSULT logo">
+    <h1>Admin sign in</h1>
+    <p class="login__sub">Manage your services and products.</p>
+
+    <div class="alert" id="loginAlert" role="alert" hidden></div>
+
+    <form id="loginForm" novalidate>
+          <div class="field">
+        <label for="username">Your name</label>
+        <input id="username" name="username" type="text" maxlength="30" autocomplete="nickname" spellcheck="false" placeholder="Any name you like" required>
+        <p class="field__hint">Type any name. Only the password is checked.</p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw">
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+          <button class="pw__toggle" id="pwToggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+      </div>
+
+      <button class="btn btn--glow btn--block" id="loginBtn" type="submit">Sign in</button>
+    </form>
+
+    <a class="login__back" href="../index.html">Back to website</a>
+  </main>
+
+  <script src="../js/auth.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>

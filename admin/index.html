@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#14123A">
+  <title>Dashboard | ZYNO-CONSULT Admin</title>
+  <link rel="icon" href="../logo-badge.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="app">
+
+  <div class="shell">
+
+    <!-- Sidebar (slide-in drawer on small screens) -->
+    <aside class="side" id="side" aria-label="Admin navigation">
+      <a class="side__brand" href="#overview">
+        <img src="../logo-badge.png" width="40" height="40" alt="">
+        <span><strong>ZYNO-CONSULT</strong><small>Admin</small></span>
+      </a>
+
+      <nav class="side__nav">
+        <a class="side__link" href="#overview" data-route="overview">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Overview
+        </a>
+        <a class="side__link" href="#services" data-route="services">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 8l9 5 9-5z"/><path d="m3 13 9 5 9-5"/></svg>
+          Services
+        </a>
+        <a class="side__link" href="#products" data-route="products">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
+          Products
+        </a>
+        <a class="side__link" href="#settings" data-route="settings">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>
+          Settings
+        </a>
+      </nav>
+
+      <div class="side__foot">
+        <a class="side__link" href="../index.html" target="_blank" rel="noopener">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+          View site
+        </a>
+        <button class="side__link" id="logoutSide" type="button">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h4M16 8l4 4-4 4M20 12H9"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="iconbtn burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="side">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+
+        <h1 class="topbar__title" id="pageTitle">Overview</h1>
+
+        <div class="topbar__right">
+          <span class="pubstate" id="pubState" role="status"><i></i><span>Checking…</span></span>
+          <button class="btn btn--sm" id="publishBtn" type="button">Publish</button>
+          <div class="user">
+            <span class="user__av" id="userAv">A</span>
+            <span class="user__name" id="userName"></span>
+          </div>
+                    <button class="btn btn--ghost btn--sm" id="pwTop" type="button">Change password</button>
+          <button class="btn btn--ghost btn--sm" id="logoutTop" type="button">Log out</button>
+        </div>
+      </header>
+
+        <div class="banner" id="pwBanner" hidden>
+        <p><strong>You are using the starting password.</strong> Change it now.</p>
+        <button class="btn btn--sm" id="pwBannerBtn" type="button">Change password</button>
+      </div>
+      <main class="view" id="view" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <dialog class="dlg" id="sessionDialog" aria-labelledby="sessionTitle">
+    <h2 id="sessionTitle">Still there?</h2>
+    <p>For your safety you will be signed out in <strong id="sessionLeft">5:00</strong>.</p>
+    <div class="dlg__actions">
+      <button class="side__link" id="pwSide" type="button">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 13l9-9M16 8l3 3M14 10l2 2"/></svg>
+          Change password
+        </button>
+      <button class="btn btn--ghost" id="sessionOut" type="button">Log out</button>
+      <button class="btn" id="sessionStay" type="button">Stay signed in</button>
+    </div>
+  </dialog>
+
+  <script src="../js/store.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="admin.js"></script>
+     <script src="services.js"></script>
+  <script src="password.js"></script>
+  <script src="products.js"></script>
+  <script src="settings.js"></script>
+</body>
+</html>

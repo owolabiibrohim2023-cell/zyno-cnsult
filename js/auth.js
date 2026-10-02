@@ -65,7 +65,7 @@
     try { return JSON.parse(localStorage.getItem(ADMIN_KEY)); } catch (e) { return null; }
   }
   function writeAdmin(rec) {
-    try { localStorage.setItem(ADMIN_KEY, JSON.stringify(rec)); } catch (e) { /* ignore */ }
+    try { localStorage.setItem(ADMIN_KEY, JSON.stringify(rec)); return true; } catch (e) { return false; }
   }
 
   // Creates the record from DEFAULT_ADMIN_PASSWORD the first time it is needed
@@ -180,8 +180,8 @@
         clearFails();
         var salt = newSalt();
         return derive(String(next), salt, ITERATIONS).then(function (newHash) {
-          writeAdmin(Object.assign({}, rec, { salt: salt, hash: newHash, iterations: ITERATIONS, passwordChanged: true }));
-          return { ok: true };
+          var saved = writeAdmin(Object.assign({}, rec, { salt: salt, hash: newHash, iterations: ITERATIONS, passwordChanged: true }));
+          return saved ? { ok: true } : { ok: false, reason: 'storage' };
         });
       });
     });
@@ -206,7 +206,7 @@
       if (!result.ok) return result;
       var rec = readAdmin() || {};
       rec.username = name;
-      writeAdmin(rec);
+      if (!writeAdmin(rec)) return { ok: false, reason: 'storage' };
       if (getSession()) startSession(name);
       return { ok: true, username: name };
     });
@@ -216,7 +216,7 @@
     if (!hasCrypto()) return Promise.reject(new Error('crypto-unavailable'));
     var salt = newSalt();
     return derive(DEFAULT_ADMIN_PASSWORD, salt, ITERATIONS).then(function (hash) {
-      writeAdmin({ salt: salt, hash: hash, iterations: ITERATIONS, passwordChanged: false });
+      if (!writeAdmin({ salt: salt, hash: hash, iterations: ITERATIONS, passwordChanged: false })) throw new Error('storage-full');
       clearFails();
       return { ok: true };
     });

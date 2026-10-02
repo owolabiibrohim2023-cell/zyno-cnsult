@@ -189,9 +189,10 @@
     return !isNaN(x) && (isNaN(y) || x > y);
   }
 
-  function load(url) {
-    var local = getLocal();
-   return fetch(url || PUBLISHED_URL, { cache: 'no-store' })
+   function load(url, options) {
+    var preview = !!(options && options.preview);
+    var local = preview ? getLocal() : null;   // your unpublished edits are only used in preview mode
+    return fetch(url || PUBLISHED_URL, { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error('No published file'); return r.json(); })
       .then(function (json) { return normalize(json); })
       .catch(function () { return null; })
@@ -202,7 +203,6 @@
         return { data: base, source: 'default', unpublished: false };
       });
   }
-
   /* ---------- Add / update / remove (used by the admin) ---------- */
   function upsert(data, collection, item) {
     var list = data[collection];

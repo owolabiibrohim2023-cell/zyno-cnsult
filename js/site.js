@@ -245,7 +245,6 @@
   /* ---------- Links that depend on the services ---------- */
   function renderLinks() {
     const list = services();
-    if (!list.length) return;
 
     const linkItem = (s) => {
       const li = el('li');
@@ -254,10 +253,11 @@
       li.appendChild(a);
       return li;
     };
-    ['#navServices', '#footerServices'].forEach((sel) => {
-      const ul = $(sel);
-      if (ul) ul.replaceChildren(...list.map(linkItem));
-    });
+    const navServices = $('#navServices');
+    if (navServices) navServices.replaceChildren(...list.map(linkItem));
+    const footerServices = $('#footerServices');
+    const footerList = footerServices && footerServices.querySelector('ul');
+    if (footerList) footerList.replaceChildren(...list.map(linkItem));
 
     const hero = $('#heroServices');
     if (hero) {
@@ -396,25 +396,24 @@
   }
 
   /* ---------- Banner shown only when this browser has unpublished edits ---------- */
-  function previewBanner() {
+   function previewBanner() {
     const b = el('div', 'preview-banner');
     b.setAttribute('role', 'status');
-    b.appendChild(el('span', null, 'Previewing unpublished changes'));
-    const d = el('button', null, 'Discard');
-    d.type = 'button';
-    d.addEventListener('click', () => { Z.clearLocal(); location.reload(); });
-    b.appendChild(d);
+    b.appendChild(el('span', null, 'Preview mode: not live yet'));
+    const a = el('a', null, 'Exit preview');
+    a.href = location.pathname;
+    b.appendChild(a);
     document.body.appendChild(b);
   }
-
   /* ---------- Start ---------- */
   const servicesBox = $('#servicesGrid');
   const productsBox = $('#productsGrid');
   if (servicesBox) skeletons(servicesBox, 4, 'skel--s');
   if (productsBox) skeletons(productsBox, 4, '');
 
-  Z.load().then((res) => {
+    Z.load(undefined, { preview: new URLSearchParams(location.search).has('preview') }).then((res) => {
     state.data = res.data;
+    window.ZynoSite = state;
     try { applySettings(state.data.settings); } catch (e) { /* keep static text */ }
     try {
       renderLinks();

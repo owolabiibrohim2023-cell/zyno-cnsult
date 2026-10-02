@@ -173,7 +173,7 @@
           $('#userAv').textContent = result.username.charAt(0).toUpperCase();
           toast('Username changed. Use it at your next sign in.');
           App.render();
-        } else showError(userCurrent, result.locked ? 'Too many incorrect attempts. Try again shortly.' : 'That is not your current password.');
+        } else showError(userCurrent, result.locked ? 'Too many incorrect attempts. Try again shortly.' : result.reason === 'storage' ? 'Browser storage is full. Free space and try again.' : 'That is not your current password.');
       } catch (err) { showError(userCurrent, 'Could not update the username in this browser.'); }
       userSave.disabled = false;
     });
@@ -224,7 +224,7 @@
           const banner = $('#pwBanner');
           if (banner) banner.hidden = true;
           App.render();
-        } else showError(cur, result.locked ? 'Too many incorrect attempts. Try again shortly.' : 'That is not your current password.');
+        } else showError(cur, result.locked ? 'Too many incorrect attempts. Try again shortly.' : result.reason === 'storage' ? 'Browser storage is full. Free space and try again.' : 'That is not your current password.');
       } catch (err) { showError(cur, 'Could not change the password in this browser.'); }
       passSave.disabled = false;
     });
@@ -398,7 +398,7 @@
           const banner = $('#pwBanner');
           if (banner) banner.hidden = false;
           toast('Admin login reset. The default password is active again.');
-          renderSettings(page);
+          App.render();
         } catch (err) { toast('Could not reset the admin login in this browser.', 'err'); }
       });
     });

@@ -405,7 +405,7 @@
   }
   $('#logoutSide').addEventListener('click', logout);
   $('#logoutTop').addEventListener('click', logout);
-  $('#publishBtn').addEventListener('click', publish);
+    $('#publishBtn').addEventListener('click', () => (window.AdminApp.publishHandler || publish)());
 
   const dlg = $('#sessionDialog');
   let dismissed = false;
@@ -443,12 +443,12 @@
   for (let i = 0; i < 8; i++) sk.appendChild(el('div', 'stat skel'));
   $('#view').appendChild(sk);
 
-  Z.load(PUBLISHED_URL).then((res) => {
+   Z.load(PUBLISHED_URL, { preview: true }).then((res) => {
     state.data = res.data;
     state.source = res.source;
     updateIndicator();
     render();
   });
 
-  window.AdminApp = { state, routes, registerRoute, render, toast, save, publish, updateIndicator, el, $, $$, svgIcon, safeSrc, fmtDate, fmtDay, priceText, countUp };
+    window.AdminApp = { state, routes, registerRoute, render, toast, save, publish, updateIndicator, el, $, $$, svgIcon, safeSrc, fmtDate, fmtDay, priceText, countUp };
 })();

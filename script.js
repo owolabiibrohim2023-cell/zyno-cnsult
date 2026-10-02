@@ -460,8 +460,9 @@
       .join('\n');
 
 
+    const whatsappNumber = window.ZynoSite && window.ZynoSite.data && window.ZynoSite.data.settings.whatsappNumber || '2348080091300';
     const whatsappURL =
-      'https://wa.me/2348080091300?text=' +
+      'https://wa.me/' + whatsappNumber + '?text=' +
       encodeURIComponent(whatsappMessage);
 
 
@@ -520,28 +521,21 @@
      FOOTER REVEAL
   ----------------------------------------- */
 
-  const revealFooter = new IntersectionObserver(
-    (entries) => {
+  const footerRevealTarget = footer.querySelector('.zy-footer__cta') || footer;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    footer.classList.add('is-visible');
+  } else {
+    const revealFooter = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
-
-        if (entry.isIntersecting) {
-
-          footer.classList.add('is-visible');
-
-          revealFooter.unobserve(footer);
-
-        }
-
+        if (!entry.isIntersecting) return;
+        footer.classList.add('is-visible');
+        observer.unobserve(entry.target);
       });
-
-    },
-    {
-      threshold: 0.12
-    }
-  );
-
-  revealFooter.observe(footer);
+    }, { threshold: 0.12 });
+    revealFooter.observe(footerRevealTarget);
+  }
 
 
   /* -----------------------------------------

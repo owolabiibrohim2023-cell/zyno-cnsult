@@ -3537,3 +3537,14 @@ button { font: inherit; color: inherit; }
 }
 
 /* In the mobile menu the button is full width, like the WhatsApp one (set by the existing .nav__foot .btn rule) */
+.preview-banner a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, .4);
+  color: #fff;
+  font: 600 .8rem var(--body);
+}
+.preview-banner a:hover { background: rgba(255, 255, 255, .12); }

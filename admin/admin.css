@@ -638,3 +638,31 @@ code.slug { padding: 2px 8px; border-radius: 6px; background: #EEF3F7; font-size
   .urlrow { flex-direction: column; }
   .bulk .btn { flex: 1 1 auto; }
 }
+/* =====================================================
+   PUBLISH TO GITHUB
+   ===================================================== */
+
+.steps { display: grid; gap: 12px; margin: 0 0 16px; padding: 0; list-style: none; }
+.steps__item { display: flex; align-items: center; gap: 12px; font-size: .95rem; color: var(--muted); }
+.steps__dot { display: grid; place-items: center; width: 22px; height: 22px; flex-shrink: 0; border: 2px solid var(--rule); border-radius: 50%; }
+.steps__item.is-active { color: var(--navy); font-weight: 600; }
+.steps__item.is-active .steps__dot { border-color: var(--teal); border-top-color: transparent; animation: gh-spin .8s linear infinite; }
+.steps__item.is-done { color: var(--navy); }
+.steps__item.is-done .steps__dot { border-color: var(--teal); background: var(--teal); }
+.steps__item.is-done .steps__dot::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg) translate(-1px, -1px); }
+.steps__item.is-error .steps__dot { border-color: #C0392B; background: #C0392B; }
+.steps__item.is-error .steps__dot::after { content: "!"; color: #fff; font-size: .75rem; font-weight: 800; line-height: 1; }
+.steps__msg { min-height: 1.4em; margin: 0 0 18px; font-size: .92rem; color: var(--muted); }
+.steps__msg.is-err { color: #A12A1D; }
+@keyframes gh-spin { to { transform: rotate(360deg); } }
+
+.how { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 12px; background: #F8FBFD; font-size: .88rem; }
+.how summary { cursor: pointer; font-weight: 600; color: var(--navy); }
+.how ol { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; color: var(--muted); }
+.ghmsg { min-height: 1.3em; margin: 4px 0 12px; font-size: .88rem; color: var(--teal-deep); }
+.ghmsg.is-err { color: #A12A1D; }
+.dlg__foot .push { margin-right: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .steps__item.is-active .steps__dot { animation: none; }
+}

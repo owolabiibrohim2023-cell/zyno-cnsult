@@ -95,10 +95,10 @@
       "images": [
         "images/products/residential-land.svg"
       ],
-      "status": "sold",
+      "status": "available",
       "featured": false,
       "createdAt": "2026-01-07T00:00:00.000Z",
-      "updatedAt": "2026-10-02T21:13:05.294Z"
+      "updatedAt": "2026-10-02T21:32:56.020Z"
     },
     {
       "id": "prd-car-1",
@@ -203,7 +203,7 @@
     "whatsappMessageTemplate": "Hello ZYNO-CONSULT, I would like to order: {product} ({service}) - {price}. Link: {link}"
   },
   "meta": {
-    "updatedAt": "2026-10-02T21:31:00.920Z",
-    "publishedAt": "2026-10-02T21:31:00.920Z"
+    "updatedAt": "2026-10-02T21:33:01.516Z",
+    "publishedAt": "2026-10-02T21:33:01.516Z"
   }
 }

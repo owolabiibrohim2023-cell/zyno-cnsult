@@ -1,1 +1,209 @@
-{"services":[{"id":"svc-real-estate","slug":"real-estate","title":"Real estate","shortDescription":"Buying, selling, construction and estate management.","description":"Buying and selling, construction, and estate broker and management services, along with related services.","bullets":["Buying and selling of property","Construction","Estate broker and estate management","Related property services"],"icon":"house","order":1,"visible":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},{"id":"svc-car-deals","slug":"car-deals","title":"Car deals","shortDescription":"Buy a car, sell yours, or swap it for another.","description":"Buy a car, sell yours, or swap it for another.","bullets":["Buying cars","Selling cars","Swapping cars"],"icon":"car","order":2,"visible":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},{"id":"svc-import-export","slug":"import-export","title":"Import and export","shortDescription":"We work as an importer and exporter.","description":"We work as an importer and exporter. Tell us what you want to bring in or send out.","bullets":["Importing goods","Exporting goods","Guidance from your first message"],"icon":"container","order":3,"visible":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"},{"id":"svc-mining-boreholes","slug":"mining-boreholes","title":"Mining and boreholes","shortDescription":"Mining of natural resources and drilling of boreholes.","description":"Mining of natural resources and drilling of boreholes.","bullets":["Mining of natural resources","Borehole drilling"],"icon":"drill","order":4,"visible":true,"createdAt":"2026-01-01T00:00:00.000Z","updatedAt":"2026-01-01T00:00:00.000Z"}],"products":[{"id":"prd-re-1","serviceId":"svc-real-estate","name":"Sample listing: 3-bedroom bungalow","description":"Sample content. Replace this from the admin dashboard with a real item.","price":35000000,"priceNote":"Negotiable","images":["images/products/bungalow.svg"],"status":"available","featured":true,"createdAt":"2026-01-08T00:00:00.000Z","updatedAt":"2026-01-08T00:00:00.000Z"},{"id":"prd-re-2","serviceId":"svc-real-estate","name":"Sample listing: Residential land","description":"Sample content. Replace this from the admin dashboard with a real item.","price":null,"priceNote":"Price on request","images":["images/products/residential-land.svg"],"status":"available","featured":false,"createdAt":"2026-01-07T00:00:00.000Z","updatedAt":"2026-01-07T00:00:00.000Z"},{"id":"prd-car-1","serviceId":"svc-car-deals","name":"Sample car: SUV","description":"Sample content. Replace this from the admin dashboard with a real item.","price":18500000,"priceNote":"","images":["images/products/suv.svg"],"status":"available","featured":true,"createdAt":"2026-01-06T00:00:00.000Z","updatedAt":"2026-01-06T00:00:00.000Z"},{"id":"prd-car-2","serviceId":"svc-car-deals","name":"Sample car: Sedan","description":"Sample content. Replace this from the admin dashboard with a real item.","price":6200000,"priceNote":"","images":["images/products/sedan.svg"],"status":"sold","featured":false,"createdAt":"2026-01-05T00:00:00.000Z","updatedAt":"2026-01-05T00:00:00.000Z"},{"id":"prd-ie-1","serviceId":"svc-import-export","name":"Sample product: Imported goods","description":"Sample content. Replace this from the admin dashboard with a real item.","price":null,"priceNote":"Price on request","images":["images/products/import-cargo.svg"],"status":"available","featured":false,"createdAt":"2026-01-04T00:00:00.000Z","updatedAt":"2026-01-04T00:00:00.000Z"},{"id":"prd-ie-2","serviceId":"svc-import-export","name":"Sample product: Export goods","description":"Sample content. Replace this from the admin dashboard with a real item.","price":null,"priceNote":"Price on request","images":["images/products/export-cargo.svg"],"status":"available","featured":false,"createdAt":"2026-01-03T00:00:00.000Z","updatedAt":"2026-01-03T00:00:00.000Z"},{"id":"prd-mb-1","serviceId":"svc-mining-boreholes","name":"Sample package: Borehole drilling","description":"Sample content. Replace this from the admin dashboard with a real item.","price":null,"priceNote":"Price on request","images":["images/products/borehole-drilling.svg"],"status":"available","featured":false,"createdAt":"2026-01-02T00:00:00.000Z","updatedAt":"2026-01-02T00:00:00.000Z"},{"id":"prd-mb-2","serviceId":"svc-mining-boreholes","name":"Sample package: Mining enquiry","description":"Sample content. Replace this from the admin dashboard with a real item.","price":null,"priceNote":"Price on request","images":["images/products/mining.svg"],"status":"available","featured":false,"createdAt":"2026-01-01T12:00:00.000Z","updatedAt":"2026-01-01T12:00:00.000Z"}],"settings":{"companyName":"ZYNO-CONSULT GLOBAL CONCEPT LTD","rcNo":"8651327","whatsappNumber":"2348080091300","phones":["+234 808 009 1300","+234 806 629 9425"],"email":"zynoglobalconceptsltd@gmail.com","whatsappMessageTemplate":"Hello ZYNO-CONSULT, I would like to order: {product} ({service}) - {price}. Link: {link}"},"meta":{"updatedAt":"2026-10-01T23:40:07.294Z","publishedAt":"2026-10-01T23:40:07.294Z"}}
+{
+  "services": [
+    {
+      "id": "svc-real-estate",
+      "slug": "real-estate",
+      "title": "Real estate",
+      "shortDescription": "Buying, selling, construction and estate management.",
+      "description": "Buying and selling, construction, and estate broker and management services, along with related services.",
+      "bullets": [
+        "Buying and selling of property",
+        "Construction",
+        "Estate broker and estate management",
+        "Related property services"
+      ],
+      "icon": "house",
+      "order": 1,
+      "visible": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "svc-car-deals",
+      "slug": "car-deals",
+      "title": "Car deals",
+      "shortDescription": "Buy a car, sell yours, or swap it for another.",
+      "description": "Buy a car, sell yours, or swap it for another.",
+      "bullets": [
+        "Buying cars",
+        "Selling cars",
+        "Swapping cars"
+      ],
+      "icon": "car",
+      "order": 2,
+      "visible": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "svc-import-export",
+      "slug": "import-export",
+      "title": "Import and export",
+      "shortDescription": "We work as an importer and exporter.",
+      "description": "We work as an importer and exporter. Tell us what you want to bring in or send out.",
+      "bullets": [
+        "Importing goods",
+        "Exporting goods",
+        "Guidance from your first message"
+      ],
+      "icon": "container",
+      "order": 3,
+      "visible": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "svc-mining-boreholes",
+      "slug": "mining-boreholes",
+      "title": "Mining and boreholes",
+      "shortDescription": "Mining of natural resources and drilling of boreholes.",
+      "description": "Mining of natural resources and drilling of boreholes.",
+      "bullets": [
+        "Mining of natural resources",
+        "Borehole drilling"
+      ],
+      "icon": "drill",
+      "order": 4,
+      "visible": true,
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "updatedAt": "2026-01-01T00:00:00.000Z"
+    }
+  ],
+  "products": [
+    {
+      "id": "prd-re-1",
+      "serviceId": "svc-real-estate",
+      "name": "Sample listing: 3-bedroom bungalow",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": 35000000,
+      "priceNote": "Negotiable",
+      "images": [
+        "images/products/bungalow.svg"
+      ],
+      "status": "sold",
+      "featured": true,
+      "createdAt": "2026-01-08T00:00:00.000Z",
+      "updatedAt": "2026-10-02T21:13:00.505Z"
+    },
+    {
+      "id": "prd-re-2",
+      "serviceId": "svc-real-estate",
+      "name": "Sample listing: Residential land",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": null,
+      "priceNote": "Price on request",
+      "images": [
+        "images/products/residential-land.svg"
+      ],
+      "status": "sold",
+      "featured": false,
+      "createdAt": "2026-01-07T00:00:00.000Z",
+      "updatedAt": "2026-10-02T21:13:05.294Z"
+    },
+    {
+      "id": "prd-car-1",
+      "serviceId": "svc-car-deals",
+      "name": "Sample car: SUV",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": 1850000000,
+      "priceNote": "",
+      "images": [
+        "images/products/suv.svg"
+      ],
+      "status": "available",
+      "featured": true,
+      "createdAt": "2026-01-06T00:00:00.000Z",
+      "updatedAt": "2026-10-02T21:30:41.670Z"
+    },
+    {
+      "id": "prd-car-2",
+      "serviceId": "svc-car-deals",
+      "name": "Sample car: Sedan",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": 6200000,
+      "priceNote": "",
+      "images": [
+        "images/products/sedan.svg"
+      ],
+      "status": "sold",
+      "featured": false,
+      "createdAt": "2026-01-05T00:00:00.000Z",
+      "updatedAt": "2026-01-05T00:00:00.000Z"
+    },
+    {
+      "id": "prd-ie-1",
+      "serviceId": "svc-import-export",
+      "name": "Sample product: Imported goods",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": null,
+      "priceNote": "Price on request",
+      "images": [
+        "images/products/import-cargo.svg"
+      ],
+      "status": "available",
+      "featured": false,
+      "createdAt": "2026-01-04T00:00:00.000Z",
+      "updatedAt": "2026-01-04T00:00:00.000Z"
+    },
+    {
+      "id": "prd-ie-2",
+      "serviceId": "svc-import-export",
+      "name": "Sample product: Export goods",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": null,
+      "priceNote": "Price on request",
+      "images": [
+        "images/products/export-cargo.svg"
+      ],
+      "status": "available",
+      "featured": false,
+      "createdAt": "2026-01-03T00:00:00.000Z",
+      "updatedAt": "2026-01-03T00:00:00.000Z"
+    },
+    {
+      "id": "prd-mb-1",
+      "serviceId": "svc-mining-boreholes",
+      "name": "Sample package: Borehole drilling",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": null,
+      "priceNote": "Price on request",
+      "images": [
+        "images/products/borehole-drilling.svg"
+      ],
+      "status": "available",
+      "featured": false,
+      "createdAt": "2026-01-02T00:00:00.000Z",
+      "updatedAt": "2026-01-02T00:00:00.000Z"
+    },
+    {
+      "id": "prd-mb-2",
+      "serviceId": "svc-mining-boreholes",
+      "name": "Sample package: Mining enquiry",
+      "description": "Sample content. Replace this from the admin dashboard with a real item.",
+      "price": null,
+      "priceNote": "Price on request",
+      "images": [
+        "images/products/mining.svg"
+      ],
+      "status": "available",
+      "featured": false,
+      "createdAt": "2026-01-01T12:00:00.000Z",
+      "updatedAt": "2026-01-01T12:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "companyName": "ZYNO-CONSULT GLOBAL CONCEPT LTD",
+    "rcNo": "8651327",
+    "whatsappNumber": "2348080091300",
+    "phones": [
+      "+234 808 009 1300",
+      "+234 806 629 9425"
+    ],
+    "email": "zynoglobalconceptsltd@gmail.com",
+    "whatsappMessageTemplate": "Hello ZYNO-CONSULT, I would like to order: {product} ({service}) - {price}. Link: {link}"
+  },
+  "meta": {
+    "updatedAt": "2026-10-02T21:31:00.920Z",
+    "publishedAt": "2026-10-02T21:31:00.920Z"
+  }
+}

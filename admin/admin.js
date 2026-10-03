@@ -107,10 +107,11 @@
   }
 
   // Later steps call this after every change
-  function save() {
+   function save() {
     const res = Z.saveData(state.data);
     if (!res.ok) { toast(res.error, 'err', 7000); return false; }
     updateIndicator();
+    if (window.AdminApp && window.AdminApp.afterSave) window.AdminApp.afterSave();
     return true;
   }
 
@@ -433,7 +434,8 @@
   $('#userName').textContent = session.username;
   $('#userAv').textContent = session.username.charAt(0).toUpperCase();
 
-  A.ensureAdmin().then(() => {
+   A.ensureAdmin().then(() => {
+    if (!A.getSession()) { location.replace('login.html?expired=1'); return; }
     const info = A.getAdminInfo();
     $('#pwBanner').hidden = !(info && !info.passwordChanged);
   }).catch(() => {});

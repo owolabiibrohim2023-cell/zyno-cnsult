@@ -1,4 +1,4 @@
-/* ZYNO-CONSULT: admin login page */
+/* ZYNO-CONSULT: admin login page (the password is checked by the server) */
 (() => {
   'use strict';
 
@@ -13,8 +13,10 @@
   const pass = $('password');
   const toggle = $('pwToggle');
 
-  // Already signed in
-  if (A.getSession()) { location.replace('index.html'); return; }
+  // Already signed in? Confirm with the server, then go straight in.
+  if (A.getSession()) {
+    A.ensureAdmin().then(() => { if (A.getSession()) location.replace('index.html'); });
+  }
 
   function showAlert(type, text) {
     alertBox.hidden = false;
@@ -24,39 +26,23 @@
   function hideAlert() { alertBox.hidden = true; }
   function setBusy(busy, label) {
     btn.disabled = busy;
-    btn.textContent = label || (busy ? 'Signing in…' : 'Sign in');
-  }
-
-  // The browser only allows password hashing on https:// or http://localhost
-  if (!A.hasCrypto()) {
-    showAlert('error', 'This page must be opened from https:// or http://localhost so the browser can protect the password. Open it from your hosting or from a local server such as Live Server.');
-    setBusy(true, 'Unavailable');
-    user.disabled = true;
-    pass.disabled = true;
-    return;
+    btn.textContent = label || (busy ? 'Signing in\u2026' : 'Sign in');
   }
 
   if (new URLSearchParams(location.search).get('expired')) {
     showAlert('info', 'Your session ended. Please sign in again.');
   }
 
-  A.ensureAdmin().catch(() => {});
-  const accountInfo = A.getAdminInfo();
-  if (accountInfo && accountInfo.username) {
-    user.value = accountInfo.username;
-    user.autocomplete = 'username';
-    user.closest('.field').querySelector('.field__hint').textContent = 'Enter the username saved for this browser account.';
-  }
-
-  // Cooldown after too many wrong attempts
+  // Cooldown after too many wrong passwords
   let lockTimer = null;
   function checkLock() {
     clearTimeout(lockTimer);
     const ms = A.lockRemaining();
     if (ms > 0) {
-      showAlert('error', 'Too many attempts. Try again in ' + Math.ceil(ms / 1000) + ' seconds.');
+      const mins = Math.ceil(ms / 60000);
+      showAlert('error', 'Too many attempts. Try again in ' + mins + (mins === 1 ? ' minute.' : ' minutes.'));
       setBusy(true, 'Locked');
-      lockTimer = setTimeout(checkLock, 500);
+      lockTimer = setTimeout(checkLock, 1000);
     } else if (btn.textContent === 'Locked') {
       hideAlert();
       setBusy(false);
@@ -69,7 +55,7 @@
     if (A.lockRemaining() > 0) { checkLock(); return; }
 
     if (!user.value.trim() || !pass.value) {
-                showAlert('error', 'Enter a name and the password.');
+      showAlert('error', 'Enter a name and the password.');
       (user.value.trim() ? pass : user).focus();
       return;
     }
@@ -80,18 +66,19 @@
     try {
       const res = await A.login(user.value, pass.value);
       if (res.ok) {
-        setBusy(true, 'Welcome…');
+        setBusy(true, 'Welcome\u2026');
         location.replace('index.html');
         return;
       }
       pass.value = '';
       setBusy(false);
       if (res.locked) { checkLock(); return; }
-       showAlert('error', res.reason === 'username' ? 'That is not the saved username for this browser.' : 'Incorrect password.');
+      if (res.reason === 'server') { showAlert('error', res.message); return; }
+      showAlert('error', 'Incorrect password.');
       pass.focus();
     } catch (err) {
       setBusy(false);
-      showAlert('error', 'Could not sign in in this browser. Open the page over https:// or http://localhost.');
+      showAlert('error', 'Could not reach the sign-in service. Check your connection and try again.');
     }
   });
 
@@ -104,4 +91,53 @@
   });
 
   user.focus();
+    /* ---------- Forgot password (needs the recovery key) ---------- */
+  const dlg = $('resetDlg');
+  const rForm = $('resetForm');
+  const rAlert = $('resetAlert');
+  const rBtn = $('resetBtn');
+
+  function rShow(text) { rAlert.hidden = !text; rAlert.className = 'alert alert--error'; rAlert.textContent = text || ''; }
+
+  $('forgotBtn').addEventListener('click', () => {
+    rForm.reset();
+    rShow('');
+    dlg.showModal();
+    $('rkey').focus();
+  });
+  $('resetCancel').addEventListener('click', () => dlg.close());
+
+  rForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const key = $('rkey').value.trim();
+    const next = $('rnew').value;
+    const conf = $('rconf').value;
+
+    if (!key) { rShow('Enter the recovery key.'); $('rkey').focus(); return; }
+    if (next.length < 8) { rShow('Use a new password of at least 8 characters.'); $('rnew').focus(); return; }
+    if (next !== conf) { rShow('The two passwords do not match.'); $('rconf').focus(); return; }
+
+    rShow('');
+    rBtn.disabled = true;
+    rBtn.textContent = 'Resetting\u2026';
+    try {
+      const res = await A.resetPassword(key, next);
+      if (res.ok) {
+        dlg.close();
+        showAlert('info', 'Password reset. Sign in with your new password.');
+        pass.focus();
+      } else if (res.reason === 'key') {
+        rShow('That recovery key is not correct.');
+        $('rkey').focus();
+      } else if (res.reason === 'locked') {
+        rShow('Too many attempts. Try again in 15 minutes.');
+      } else {
+        rShow(res.message || 'Could not reset the password. Please try again.');
+      }
+    } catch (err) {
+      rShow('Could not reach the server. Check your connection and try again.');
+    }
+    rBtn.disabled = false;
+    rBtn.textContent = 'Reset password';
+  });
 })();

@@ -598,11 +598,3 @@
   }
 
 })();
-/* ---------- Part 6: show the Admin button only in browsers that have used the admin ---------- */
-(() => {
-  const btn = document.querySelector('.btn--admin');
-  if (!btn) return;
-  let known = false;
-  try { known = !!localStorage.getItem('zyno_admin'); } catch (e) { /* ignore */ }
-  btn.hidden = !known;
-})();

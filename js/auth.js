@@ -1,241 +1,141 @@
-/* ZYNO-CONSULT: admin sign-in (frontend only).
-   Any name can be typed; only the password is checked. The password is never
-   stored as plain text: only a salted PBKDF2 hash is kept in this browser.
-   This is a convenience lock, not real security. */
+/* ZYNO-CONSULT: admin sign-in. The password is checked by the server (Vercel),
+   so nothing secret lives in the browser. This file only talks to /api and
+   remembers a short "signed in" hint so the pages can decide quickly. */
 (function (global) {
   'use strict';
 
-  /* ===== EDIT THIS LINE BEFORE GOING LIVE ===== */
-  var DEFAULT_ADMIN_PASSWORD = 'CHANGE_ME';
-  /* ============================================ */
+  var HINT = 'zyno_session_hint';
+  var SEEN = 'zyno_admin_seen';
+  var LOCK = 'zyno_login_lock';
+  var SESSION_MS = 2 * 60 * 60 * 1000;
 
-  var ADMIN_KEY = 'zyno_admin';
-  var SESSION_KEY = 'zyno_session';
-  var FAIL_KEY = 'zyno_auth_fail';
-  var SESSION_MS = 2 * 60 * 60 * 1000; // 2 hours
-  var MAX_FAILS = 5;
-  var LOCK_MS = 60 * 1000;             // 1 minute cooldown after 5 wrong tries
-  var ITERATIONS = 100000;
-
-  function hasCrypto() {
-    return !!(global.crypto && global.crypto.subtle && global.crypto.getRandomValues);
-  }
-
-  function toHex(buffer) {
-    return Array.prototype.map.call(new Uint8Array(buffer), function (b) {
-      return ('0' + b.toString(16)).slice(-2);
-    }).join('');
-  }
-
-  function fromHex(hex) {
-    var out = new Uint8Array(hex.length / 2);
-    for (var i = 0; i < out.length; i++) out[i] = parseInt(hex.substr(i * 2, 2), 16);
-    return out;
-  }
-
-  function newSalt() {
-    var a = new Uint8Array(16);
-    global.crypto.getRandomValues(a);
-    return toHex(a);
-  }
-
-  function derive(password, saltHex, iterations) {
-    var enc = new TextEncoder();
-    return global.crypto.subtle
-      .importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits'])
-      .then(function (key) {
-        return global.crypto.subtle.deriveBits(
-          { name: 'PBKDF2', hash: 'SHA-256', salt: fromHex(saltHex), iterations: iterations },
-          key,
-          256
-        );
-      })
-      .then(toHex);
-  }
-
-  function same(a, b) {
-    if (a.length !== b.length) return false;
-    var diff = 0;
-    for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-    return diff === 0;
-  }
-
-  /* ---------- Stored admin record ---------- */
-  function readAdmin() {
-    try { return JSON.parse(localStorage.getItem(ADMIN_KEY)); } catch (e) { return null; }
-  }
-  function writeAdmin(rec) {
-    try { localStorage.setItem(ADMIN_KEY, JSON.stringify(rec)); return true; } catch (e) { return false; }
-  }
-
-  // Creates the record from DEFAULT_ADMIN_PASSWORD the first time it is needed
-  function ensureAdmin() {
-    if (!hasCrypto()) return Promise.reject(new Error('crypto-unavailable'));
-    var rec = readAdmin();
-    if (rec && rec.hash && rec.salt) return Promise.resolve(rec);
-    var salt = newSalt();
-    return derive(DEFAULT_ADMIN_PASSWORD, salt, ITERATIONS).then(function (hash) {
-      var fresh = { salt: salt, hash: hash, iterations: ITERATIONS, passwordChanged: false };
-      writeAdmin(fresh);
-      return fresh;
+  function call(method, url, body, keepalive) {
+    return fetch(url, {
+      method: method,
+      credentials: 'same-origin',
+      cache: 'no-store',
+      keepalive: Boolean(keepalive),
+      headers: Object.assign({ 'X-Zyno': '1' }, body ? { 'Content-Type': 'application/json' } : {}),
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (json) {
+        return { status: res.status, ok: res.ok, json: json };
+      });
     });
+  }
+
+  /* ---------- The hint ---------- */
+  function readHint() {
+    try {
+      var h = JSON.parse(localStorage.getItem(HINT));
+      if (!h || !h.expiresAt || h.expiresAt <= Date.now()) { localStorage.removeItem(HINT); return null; }
+      return h;
+    } catch (e) { return null; }
+  }
+  function writeHint(name, expiresAt, changed) {
+    try {
+      localStorage.setItem(HINT, JSON.stringify({ username: name, expiresAt: expiresAt, passwordChanged: Boolean(changed) }));
+      localStorage.setItem(SEEN, '1');
+    } catch (e) { /* ignore */ }
+  }
+  function clearHint() { try { localStorage.removeItem(HINT); } catch (e) { /* ignore */ } }
+
+  /* ---------- Cooldown shown after the server says "too many attempts" ---------- */
+  function lockRemaining() {
+    try { return Math.max(0, (Number(localStorage.getItem(LOCK)) || 0) - Date.now()); } catch (e) { return 0; }
+  }
+  function setLock(ms) { try { localStorage.setItem(LOCK, String(Date.now() + ms)); } catch (e) { /* ignore */ } }
+  function clearLock() { try { localStorage.removeItem(LOCK); } catch (e) { /* ignore */ } }
+
+  /* ---------- Public functions (same names the dashboard already uses) ---------- */
+  function hasCrypto() { return true; }
+
+  // Asks the server whether the sign-in is still valid and refreshes the hint
+  function ensureAdmin() {
+    return call('GET', '/api/session').then(function (r) {
+      if (r.status === 200 && r.json.ok) writeHint(r.json.name, r.json.expiresAt, r.json.passwordChanged);
+      else if (r.status === 401) clearHint();
+    }).catch(function () { /* offline: keep what we have */ });
   }
 
   function getAdminInfo() {
-    var rec = readAdmin();
-    return rec ? { passwordChanged: !!rec.passwordChanged, username: String(rec.username || '') } : null;
+    var h = readHint();
+    return h ? { passwordChanged: Boolean(h.passwordChanged) } : null;
   }
 
-  /* ---------- Cooldown after repeated wrong passwords ---------- */
-  function readFail() {
-    try { return JSON.parse(localStorage.getItem(FAIL_KEY)) || { count: 0, until: 0 }; }
-    catch (e) { return { count: 0, until: 0 }; }
-  }
-  function writeFail(f) {
-    try { localStorage.setItem(FAIL_KEY, JSON.stringify(f)); } catch (e) { /* ignore */ }
-  }
-  function lockRemaining() {
-    return Math.max(0, (readFail().until || 0) - Date.now());
-  }
-  function clearFails() { writeFail({ count: 0, until: 0 }); }
-  function recordFail() {
-    var f = readFail();
-    f.count = (f.count || 0) + 1;
-    var locked = false;
-    if (f.count >= MAX_FAILS) { f.until = Date.now() + LOCK_MS; f.count = 0; locked = true; }
-    writeFail(f);
-    return locked;
-  }
-
-  /* ---------- Session (cleared when the tab closes) ---------- */
-  function startSession(name) {
-    try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ username: name, expiresAt: Date.now() + SESSION_MS }));
-    } catch (e) { /* ignore */ }
-  }
-
-  function getSession() {
-    try {
-      var s = JSON.parse(sessionStorage.getItem(SESSION_KEY));
-      if (!s || !s.expiresAt || s.expiresAt <= Date.now()) {
-        sessionStorage.removeItem(SESSION_KEY);
-        return null;
-      }
-      return s;
-    } catch (e) { return null; }
-  }
-
-  function extendSession() {
-    var s = getSession();
-    if (s) startSession(s.username);
-  }
-
-  function endSession() {
-    try { sessionStorage.removeItem(SESSION_KEY); } catch (e) { /* ignore */ }
-  }
-
-  function requireSession(loginUrl) {
-    var s = getSession();
-    if (!s) { global.location.replace(loginUrl || 'login.html'); return null; }
-    return s;
-  }
-
-  /* ---------- Login: any name, correct password ---------- */
   function login(name, password) {
     var display = String(name || '').trim().slice(0, 30);
     if (!display) return Promise.resolve({ ok: false, reason: 'name' });
-
     var wait = lockRemaining();
     if (wait > 0) return Promise.resolve({ ok: false, locked: true, wait: wait });
 
-    return ensureAdmin().then(function (rec) {
-      if (rec.username && display.toLowerCase() !== String(rec.username).toLowerCase()) {
-        return { ok: false, reason: 'username' };
+    return call('POST', '/api/login', { name: display, password: String(password) }).then(function (r) {
+      if (r.status === 200 && r.json.ok) {
+        clearLock();
+        writeHint(r.json.name, r.json.expiresAt || Date.now() + SESSION_MS, r.json.passwordChanged);
+        return { ok: true };
       }
-      return derive(String(password), rec.salt, rec.iterations || ITERATIONS).then(function (hash) {
-        if (same(hash, rec.hash)) {
-          clearFails();
-          startSession(display);
-          return { ok: true };
-        }
-        var locked = recordFail();
-        return new Promise(function (resolve) {
-          setTimeout(function () { resolve({ ok: false, reason: 'password', locked: locked, wait: locked ? LOCK_MS : 0 }); }, 500);
-        });
-      });
+      if (r.status === 429) { setLock(15 * 60 * 1000); return { ok: false, locked: true, wait: 15 * 60 * 1000 }; }
+      if (r.status === 401) return { ok: false, reason: 'password' };
+      return { ok: false, reason: 'server', message: r.json.error || 'The sign-in service is not available. Open the live site, or run "vercel dev" locally.' };
     });
   }
 
-  /* ---------- Change password (needs the current one) ---------- */
   function changePassword(current, next) {
-    var wait = lockRemaining();
-    if (wait > 0) return Promise.resolve({ ok: false, locked: true, wait: wait });
-
-    return ensureAdmin().then(function (rec) {
-      return derive(String(current), rec.salt, rec.iterations || ITERATIONS).then(function (hash) {
-        if (!same(hash, rec.hash)) {
-          var locked = recordFail();
-          return { ok: false, reason: 'wrong', locked: locked, wait: locked ? LOCK_MS : 0 };
-        }
-        clearFails();
-        var salt = newSalt();
-        return derive(String(next), salt, ITERATIONS).then(function (newHash) {
-          var saved = writeAdmin(Object.assign({}, rec, { salt: salt, hash: newHash, iterations: ITERATIONS, passwordChanged: true }));
-          return saved ? { ok: true } : { ok: false, reason: 'storage' };
-        });
-      });
+    return call('POST', '/api/change-password', { current: String(current), next: String(next) }).then(function (r) {
+      if (r.status === 200 && r.json.ok) {
+        var h = readHint();
+        writeHint(h ? h.username : 'Admin', r.json.expiresAt || Date.now() + SESSION_MS, true);
+        return { ok: true };
+      }
+      if (r.status === 429) return { ok: false, locked: true, wait: 15 * 60 * 1000 };
+      if (r.status === 401 && r.json.reason === 'wrong') return { ok: false, reason: 'wrong' };
+      if (r.status === 401) { clearHint(); global.location.replace('login.html?expired=1'); return { ok: false, reason: 'expired' }; }
+      return { ok: false, reason: 'server', message: r.json.error };
     });
   }
 
-  function verifyPassword(current) {
-    var wait = lockRemaining();
-    if (wait > 0) return Promise.resolve({ ok: false, locked: true, wait: wait });
-    return ensureAdmin().then(function (rec) {
-      return derive(String(current), rec.salt, rec.iterations || ITERATIONS).then(function (hash) {
-        if (same(hash, rec.hash)) { clearFails(); return { ok: true }; }
-        var locked = recordFail();
-        return { ok: false, locked: locked, wait: locked ? LOCK_MS : 0 };
-      });
-    });
+  function getSession() { return readHint(); }
+
+  function extendSession() {
+    var h = readHint();
+    if (!h) return;
+    writeHint(h.username, Date.now() + SESSION_MS, h.passwordChanged);   // optimistic, then confirmed by the server
+    call('POST', '/api/session').then(function (r) {
+      if (r.status === 200 && r.json.ok) writeHint(r.json.name, r.json.expiresAt, r.json.passwordChanged);
+    }).catch(function () { /* ignore */ });
   }
 
-  function changeUsername(current, next) {
-    var name = String(next || '').trim().slice(0, 30);
-    if (!name) return Promise.resolve({ ok: false, reason: 'username' });
-    return verifyPassword(current).then(function (result) {
-      if (!result.ok) return result;
-      var rec = readAdmin() || {};
-      rec.username = name;
-      if (!writeAdmin(rec)) return { ok: false, reason: 'storage' };
-      if (getSession()) startSession(name);
-      return { ok: true, username: name };
-    });
+  function endSession() {
+    clearHint();
+    call('POST', '/api/logout', { bye: 1 }, true).catch(function () { /* ignore */ });
   }
 
-  function resetAdminLogin() {
-    if (!hasCrypto()) return Promise.reject(new Error('crypto-unavailable'));
-    var salt = newSalt();
-    return derive(DEFAULT_ADMIN_PASSWORD, salt, ITERATIONS).then(function (hash) {
-      if (!writeAdmin({ salt: salt, hash: hash, iterations: ITERATIONS, passwordChanged: false })) throw new Error('storage-full');
-      clearFails();
-      return { ok: true };
+  function requireSession(loginUrl) {
+    var s = readHint();
+    if (!s) { global.location.replace(loginUrl || 'login.html'); return null; }
+    return s;
+  }
+  function resetPassword(key, next) {
+    return call('POST', '/api/reset-password', { key: String(key), next: String(next) }).then(function (r) {
+      if (r.status === 200 && r.json.ok) return { ok: true };
+      if (r.status === 429) return { ok: false, reason: 'locked' };
+      if (r.status === 401) return { ok: false, reason: 'key' };
+      return { ok: false, reason: 'server', message: r.json.error };
     });
   }
-
   global.ZynoAuth = {
     hasCrypto: hasCrypto,
     ensureAdmin: ensureAdmin,
     getAdminInfo: getAdminInfo,
     login: login,
     changePassword: changePassword,
-    verifyPassword: verifyPassword,
-    changeUsername: changeUsername,
-    resetAdminLogin: resetAdminLogin,
+    resetPassword: resetPassword,
     lockRemaining: lockRemaining,
-    startSession: startSession,
     getSession: getSession,
     extendSession: extendSession,
     endSession: endSession,
     requireSession: requireSession
+  
   };
 })(window);

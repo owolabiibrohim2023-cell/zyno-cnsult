@@ -139,10 +139,13 @@
         if (res.locked) {
           status.hidden = false;
           status.textContent = 'Too many wrong attempts. Try again in a minute.';
-        } else {
+               } else if (res.reason === 'wrong') {
           showErr(fCur, 'That is not your current password.');
           fCur.input.value = '';
           fCur.input.focus();
+        } else {
+          status.hidden = false;
+          status.textContent = res.message || 'Could not change the password. Please try again.';
         }
       } catch (err) {
         status.hidden = false;

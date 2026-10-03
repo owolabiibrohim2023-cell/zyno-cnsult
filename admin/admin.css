@@ -667,11 +667,3 @@ code.slug { padding: 2px 8px; border-radius: 6px; background: #EEF3F7; font-size
 @media (prefers-reduced-motion: reduce) {
   .steps__item.is-active .steps__dot { animation: none; }
 }
-/* Auto-publish switch and busy status */
-.autopub { display: inline-flex; align-items: center; gap: 8px; font-size: .82rem; font-weight: 600; color: var(--muted); cursor: pointer; }
-.pubstate.is-busy { background: var(--sky); color: var(--navy); }
-.pubstate.is-busy i { background: var(--navy); box-shadow: 0 0 8px var(--navy); animation: blink 1s ease-in-out infinite; }
-@media (max-width: 700px) { .autopub span { display: none; } }
-@media (prefers-reduced-motion: reduce) { .pubstate.is-busy i { animation: none; } }
-.login__forgot { display: block; margin: 14px auto 0; padding: 8px 12px; border: 0; background: transparent; color: var(--teal-deep); font-size: .88rem; font-weight: 600; cursor: pointer; }
-.login__forgot:hover { text-decoration: underline; }

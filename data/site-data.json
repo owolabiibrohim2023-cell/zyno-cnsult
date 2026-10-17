@@ -116,21 +116,6 @@
       "updatedAt": "2026-01-05T00:00:00.000Z"
     },
     {
-      "id": "prd-ie-1",
-      "serviceId": "svc-import-export",
-      "name": "Sample product: Imported goods",
-      "description": "Sample content. Replace this from the admin dashboard with a real item.",
-      "price": null,
-      "priceNote": "Price on request",
-      "images": [
-        "images/products/import-cargo.svg"
-      ],
-      "status": "available",
-      "featured": false,
-      "createdAt": "2026-01-04T00:00:00.000Z",
-      "updatedAt": "2026-01-04T00:00:00.000Z"
-    },
-    {
       "id": "prd-ie-2",
       "serviceId": "svc-import-export",
       "name": "Sample product: Export goods",
@@ -188,8 +173,8 @@
     "whatsappMessageTemplate": "Hello ZYNO-CONSULT, I would like to order: {product} ({service}) - {price}. Link: {link}"
   },
   "meta": {
-    "updatedAt": "2026-10-17T13:38:50.118Z",
-    "publishedAt": "2026-10-17T13:38:50.118Z",
-    "publishId": "03312c8a2f74e61f"
+    "updatedAt": "2026-10-17T13:38:59.279Z",
+    "publishedAt": "2026-10-17T13:38:59.279Z",
+    "publishId": "faa313b422e69203"
   }
 }

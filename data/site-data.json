@@ -174,21 +174,6 @@
       "featured": false,
       "createdAt": "2026-01-01T12:00:00.000Z",
       "updatedAt": "2026-01-01T12:00:00.000Z"
-    },
-    {
-      "id": "id_mvcfz1r9ncdm8",
-      "serviceId": "svc-real-estate",
-      "name": "Sample listing: Residential land (copy)",
-      "description": "Sample content. Replace this from the admin dashboard with a real item.",
-      "price": null,
-      "priceNote": "Price on request",
-      "images": [
-        "images/products/residential-land.svg"
-      ],
-      "status": "hidden",
-      "featured": false,
-      "createdAt": "2026-10-17T13:38:06.120Z",
-      "updatedAt": "2026-10-17T13:38:06.120Z"
     }
   ],
   "settings": {
@@ -203,8 +188,8 @@
     "whatsappMessageTemplate": "Hello ZYNO-CONSULT, I would like to order: {product} ({service}) - {price}. Link: {link}"
   },
   "meta": {
-    "updatedAt": "2026-10-17T13:38:21.894Z",
-    "publishedAt": "2026-10-17T13:38:21.894Z",
-    "publishId": "5ffa3ba75248984d"
+    "updatedAt": "2026-10-17T13:38:50.118Z",
+    "publishedAt": "2026-10-17T13:38:50.118Z",
+    "publishId": "03312c8a2f74e61f"
   }
 }
